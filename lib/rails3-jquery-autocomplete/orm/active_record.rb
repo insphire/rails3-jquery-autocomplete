@@ -17,8 +17,16 @@ module Rails3JQueryAutocomplete
         limit   = get_autocomplete_limit(options)
         order   = get_autocomplete_order(method, options, model)
 
-
-        items = model.scoped
+        # inspHire: parent model change
+        parent = parameters[:parent]
+        if parent
+          relation_name = options[:relation_name] || model.name.underscore.pluralize
+          initial_scope = parent.send(relation_name)
+          items = initial_scope.scoped
+        else
+          items = model.scoped
+        end
+        # ------------------------- END
 
         scopes.each { |scope| items = items.send(scope) } unless scopes.empty?
 

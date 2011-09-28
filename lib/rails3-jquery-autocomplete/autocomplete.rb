@@ -51,8 +51,13 @@ module Rails3JQueryAutocomplete
           if term && !term.blank?
             #allow specifying fully qualified class name for model object
             class_name = options[:class_name] || object
+            #items = get_autocomplete_items(:model => get_object(class_name), \
+            #  :options => options, :term => term, :method => method)
+              
+            # inspHire: parent model change
             items = get_autocomplete_items(:model => get_object(class_name), \
-              :options => options, :term => term, :method => method)
+              :options => options, :term => term, :method => method, :parent => get_parent(options[:parent_class_name]))
+            # ------------------------- END
           else
             items = {}
           end
@@ -75,6 +80,20 @@ module Rails3JQueryAutocomplete
     def get_object(model_sym)
       object = model_sym.to_s.camelize.constantize
     end
+    
+    # inspHire: parent model change
+    def get_parent(parent_class_name)
+      if parent_id = params[:id]
+        parent_class_name = parent_class_name || params[:controller].singularize
+        begin
+          parent_model = get_object(parent_class_name)
+        rescue
+          raise "Couldn't find any ActiveRecord model with name: #{parent_class_name}. Please indicate a valid model name via the :parent_class_name option."
+        end
+        parent_model.find(parent_id)
+      end
+    end
+    # ------------------------- END
 
     #
     # Returns a hash with three keys actually used by the Autocomplete jQuery-ui
