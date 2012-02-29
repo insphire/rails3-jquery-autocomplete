@@ -1,5 +1,7 @@
 # rails3-jquery-autocomplete
 
+[![Build Status](https://secure.travis-ci.org/crowdint/rails3-jquery-autocomplete.png)](http://travis-ci.org/crowdint/rails3-jquery-autocomplete)
+
 An easy way to use jQuery's autocomplete with Rails 3.
 
 Supports both ActiveRecord, [mongoid](http://github.com/mongoid/mongoid), and [MongoMapper](https://github.com/jnunemaker/mongomapper).
@@ -71,7 +73,7 @@ Just add it to your app/assets/javascripts/application.js file
 
     //= require jquery
     //= require jquery_ujs
-    //= require jquery_ui
+    //= require jquery-ui
     //= require autocomplete-rails
 
 ## Usage
