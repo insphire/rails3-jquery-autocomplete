@@ -1,8 +1,13 @@
 module SimpleForm
+
   module Inputs
     class AutocompleteInput < Base
       def input
-        @builder.autocomplete_field(attribute_name, options[:url], input_html_options.merge(update_elements(options[:update_elements])))
+        @builder.autocomplete_field(
+          attribute_name,
+          options[:url],
+          html_options
+        )
       end
 
     protected
@@ -15,15 +20,22 @@ module SimpleForm
         placeholder_present?
       end
 
+      def html_options
+        input_html_options.merge update_elements options[:update_elements]
+      end
+
       def update_elements(elements)
-        {'data-update-elements' => elements.to_json}
+        if elements
+          {'data-update-elements' => elements.to_json}
+        else
+          {}
+        end
       end
     end
   end
-end
 
-module SimpleForm
   class FormBuilder
     map_type :autocomplete, :to => SimpleForm::Inputs::AutocompleteInput
   end
+
 end
